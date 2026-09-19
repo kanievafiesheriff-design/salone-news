@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "salone-news-backend",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "create-admin": "node scripts/createAdmin.js",
+    "check": "node --input-type=module -e \"import fs from 'node:fs'; import { execFileSync } from 'node:child_process'; const files = ['src/server.js', 'src/app.js']; for (const file of files) { if (fs.existsSync(file)) execFileSync(process.execPath, ['--check', file], { stdio: 'inherit' }); }\"",
+    "build": "npm run check"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.11.0",
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.10.1",
+    "multer": "^2.4.0",
+    "slugify": "^1.6.9"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
