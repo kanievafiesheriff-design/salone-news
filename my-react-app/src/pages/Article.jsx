@@ -2,12 +2,30 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import news from "../data/news";
 import { getArticle } from "../services/newsApi";
-import { Share2, MessageCircle } from "lucide-react";
+import { Share2, MessageCircle, Download } from "lucide-react";
 
 export default function Article() {
 	const { id } = useParams();
 	const [article, setArticle] = useState(() => news.find((item) => String(item.id) === id || item.slug === id));
 	const [isLoading, setIsLoading] = useState(true);
+
+	const handleDownload = async (url, filename) => {
+		try {
+			const response = await fetch(url);
+			const blob = await response.blob();
+			const blobUrl = window.URL.createObjectURL(blob);
+			const link = document.createElement("a");
+			link.href = blobUrl;
+			link.download = filename || "audio-clip.mp3";
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+			window.URL.revokeObjectURL(blobUrl);
+		} catch (error) {
+			console.error("Download failed:", error);
+			window.open(url, "_blank");
+		}
+	};
 
 	useEffect(() => {
 		setIsLoading(true);
@@ -56,6 +74,15 @@ export default function Article() {
 					<Share2 size={14} />
 					Copy Link
 				</button>
+				{article.audioUrl && (
+					<button
+						onClick={() => handleDownload(article.audioUrl, `${article.title.replace(/\s+/g, "-").toLowerCase()}.mp3`)}
+						className="flex items-center gap-2 rounded-full bg-green-100 px-3 py-1.5 text-xs font-bold text-green-700 transition hover:bg-green-200"
+					>
+						<Download size={14} />
+						Download Audio
+					</button>
+				)}
 			</div>
 
 			<img
@@ -63,6 +90,17 @@ export default function Article() {
 				alt=""
 				className="mt-8 h-80 w-full rounded-xl object-cover md:h-[30rem]"
 			/>
+			{article.videoUrl && (
+				<div className="mt-8">
+					<video
+						src={article.videoUrl}
+						controls
+						className="w-full rounded-xl shadow-lg"
+						preload="metadata"
+					/>
+					<p className="mt-2 text-sm text-gray-500 italic text-center">Watch the full report</p>
+				</div>
+			)}
 			<div className="mx-auto mt-8 max-w-3xl text-lg leading-8 text-gray-700">
 				<p>{article.excerpt}</p>
 				<p className="mt-6">{article.content}</p>

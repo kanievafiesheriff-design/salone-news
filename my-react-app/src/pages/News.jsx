@@ -4,6 +4,7 @@ import news from "../data/news";
 import { getNews, getAds } from "../services/newsApi";
 import AdCard from "../components/AdCard";
 
+
 export default function News() {
 	const [articles, setArticles] = useState(news);
 	const [ads, setAds] = useState({

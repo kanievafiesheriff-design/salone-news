@@ -22,6 +22,8 @@ const news = [
     source: "The Calabash Newspaper",
     sourceUrl: "https://thecalabashnewspaper.com/archives/64301",
     tags: ["Malaria", "Health", "Bonthe", "Tonkolili"],
+    videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
+    audioUrl: "https://www.w3schools.com/html/horse.mp3",
   },
 
   {

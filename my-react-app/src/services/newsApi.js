@@ -5,13 +5,20 @@ const API_URL =
  * Generic API request helper
  */
 async function request(endpoint, options = {}) {
-  const response = await fetch(`${API_URL}${endpoint}`, {
+  const baseUrl = API_URL.endsWith('/') ? API_URL.slice(0, -1) : API_URL;
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const finalUrl = `${baseUrl}${cleanEndpoint}`;
+
+  console.log(`Calling API: ${finalUrl}`);
+
+  const response = await fetch(finalUrl, {
     ...options,
     headers: {
       "Content-Type": "application/json",
       ...(options.headers || {}),
     },
   });
+
 
   let data;
 
@@ -202,9 +209,49 @@ export async function uploadAdminImage(file) {
   return data;
 }
 
+export async function uploadAdminVideo(file) {
+  const body = new FormData();
+  body.append('video', file);
+  const token = localStorage.getItem('salone_token');
+  const response = await fetch(`${API_URL}/uploads/video`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body,
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message || 'Video upload failed');
+  return data;
+}
+
+export async function uploadAdminAudio(file) {
+  const body = new FormData();
+  body.append('audio', file);
+  const token = localStorage.getItem('salone_token');
+  const response = await fetch(`${API_URL}/uploads/audio`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
+    body,
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.message || 'Audio upload failed');
+  return data;
+}
+
+// ... (rest of the file before line 246)
 export async function sendContactMessage(messageData) {
   return request('/contact', {
     method: 'POST',
     body: JSON.stringify(messageData),
+  });
+}
+
+export async function getSettings() {
+  return request('/settings');
+}
+
+export async function updateSetting(key, value) {
+  return adminRequest('/settings', {
+    method: 'PUT',
+    body: JSON.stringify({ key, value }),
   });
 }

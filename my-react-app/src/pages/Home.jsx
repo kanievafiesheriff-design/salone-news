@@ -5,6 +5,8 @@ import TrendingNews from "../components/TrendingNews";
 import PopularNews from "../components/PopularNews";
 import CategoryNews from "../components/CategoryNews";
 import AdCard from "../components/AdCard";
+import GoogleAdComponent from "../components/GoogleAdComponent";
+import { GOOGLE_AD_SLOTS } from "../config/adSlots";
 import { getAds } from "../services/newsApi";
 
 export default function Home() {
@@ -31,6 +33,9 @@ export default function Home() {
     <main>
       {/* Main featured stories */}
       <FeaturedNews />
+
+      {/* Google Ad - Top */}
+      <GoogleAdComponent slot={GOOGLE_AD_SLOTS.HOME_TOP} />
 
       {/* Home Top Ad Slot */}
       {ads.home_top?.length > 0 && (
@@ -127,6 +132,9 @@ export default function Home() {
               ))}
             </div>
           )}
+
+          {/* Google Ad - Sidebar */}
+          <GoogleAdComponent slot={GOOGLE_AD_SLOTS.HOME_SIDEBAR} />
 
           {/* Trending */}
           <TrendingNews />

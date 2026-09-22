@@ -22,8 +22,9 @@ import {
 } from "lucide-react";
 import news from "../data/news";
 import AuthContext from "../context/AuthContext";
-import { createAdminNews, deleteAdminNews, getAdminNews, updateAdminNews, uploadAdminImage, setBreakingNews, getBreakingNews } from "../services/newsApi";
+import { createAdminNews, deleteAdminNews, getAdminNews, updateAdminNews, uploadAdminImage, setBreakingNews, getBreakingNews, getSettings, updateSetting } from "../services/newsApi";
 import "./AdminDashboard.css";
+// ... (rest of the imports)
 
 const navItems = [
   { label: "Overview", icon: LayoutDashboard },
@@ -65,10 +66,14 @@ function AdminDashboard() {
   const [isSaving, setIsSaving] = useState(false);
   const [isAddingCategory, setIsAddingCategory] = useState(false);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [isUploadingVideo, setIsUploadingVideo] = useState(false);
+  const [isUploadingAudio, setIsUploadingAudio] = useState(false);
   const [pendingImage, setPendingImage] = useState(null);
+  const [pendingVideo, setPendingVideo] = useState(null);
+  const [pendingAudio, setPendingAudio] = useState(null);
   const [breakingNewsText, setBreakingNewsText] = useState("");
   const { signOut, user } = useContext(AuthContext);
-  const [form, setForm] = useState({ title: "", excerpt: "", content: "", category: "Politics", author: user?.name || "Vafie Sheriff", image: "", location: "Freetown", published: false, featured: false, trending: false, isAd: false, adLink: "" });
+  const [form, setForm] = useState({ title: "", excerpt: "", content: "", category: "Politics", author: user?.name || "Vafie Sheriff", image: "", videoUrl: "", audioUrl: "", location: "Freetown", published: false, featured: false, trending: false, isAd: false, adLink: "" });
 
   useEffect(() => {
     getAdminNews({ limit: 50 })
@@ -140,6 +145,40 @@ function AdminDashboard() {
     }
   };
 
+  const uploadVideo = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setPendingVideo(file);
+    setIsUploadingVideo(true);
+    setActionError("");
+    try {
+      const response = await uploadAdminVideo(file);
+      setForm((current) => ({ ...current, videoUrl: response.videoUrl }));
+    } catch (error) {
+      setActionError(error.message);
+    } finally {
+      setIsUploadingVideo(false);
+    }
+  };
+
+  const uploadAudio = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setPendingAudio(file);
+    setIsUploadingAudio(true);
+    setActionError("");
+    try {
+      const response = await uploadAdminAudio(file);
+      setForm((current) => ({ ...current, audioUrl: response.audioUrl }));
+    } catch (error) {
+      setActionError(error.message);
+    } finally {
+      setIsUploadingAudio(false);
+    }
+  };
+
   const saveBreakingNews = async () => {
     setActionError("");
     try {
@@ -155,12 +194,27 @@ function AdminDashboard() {
     setIsSaving(true);
     setActionError("");
     try {
-      let article = form;
+      let article = { ...form };
+
       if (pendingImage && !form.image) {
         setIsUploadingImage(true);
         const uploadResponse = await uploadAdminImage(pendingImage);
-        article = { ...form, image: uploadResponse.imageUrl };
+        article.image = uploadResponse.imageUrl;
         setIsUploadingImage(false);
+      }
+
+      if (pendingVideo && !form.videoUrl) {
+        setIsUploadingVideo(true);
+        const uploadResponse = await uploadAdminVideo(pendingVideo);
+        article.videoUrl = uploadResponse.videoUrl;
+        setIsUploadingVideo(false);
+      }
+
+      if (pendingAudio && !form.audioUrl) {
+        setIsUploadingAudio(true);
+        const uploadResponse = await uploadAdminAudio(pendingAudio);
+        article.audioUrl = uploadResponse.audioUrl;
+        setIsUploadingAudio(false);
       }
 
       if (article.isAd && article.published && !article.image) {
@@ -172,11 +226,15 @@ function AdminDashboard() {
       setIsComposerOpen(false);
       setIsAddingCategory(false);
       setPendingImage(null);
-      setForm({ title: "", excerpt: "", content: "", category: "Politics", author: user?.name || "Vafie Sheriff", image: "", location: "Freetown", published: false, featured: false, trending: false });
+      setPendingVideo(null);
+      setPendingAudio(null);
+      setForm({ title: "", excerpt: "", content: "", category: "Politics", author: user?.name || "Vafie Sheriff", image: "", videoUrl: "", audioUrl: "", location: "Freetown", published: false, featured: false, trending: false });
     } catch (error) {
       setActionError(error.message);
     } finally {
       setIsUploadingImage(false);
+      setIsUploadingVideo(false);
+      setIsUploadingAudio(false);
       setIsSaving(false);
     }
   };
@@ -398,10 +456,55 @@ function AdminDashboard() {
           </div>
         </div>
       </main>
-      {isComposerOpen && <div className="admin-modal-backdrop" role="presentation" onClick={() => setIsComposerOpen(false)}><form className="admin-composer admin-story-form" onSubmit={saveStory} role="dialog" aria-modal="true" aria-labelledby="composer-title" onClick={(event) => event.stopPropagation()}><button className="admin-modal-close" type="button" onClick={() => setIsComposerOpen(false)} aria-label="Close"><X size={19} /></button><div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.5rem' }}><div style={{ flex: 1 }}><p className="admin-panel-kicker">Content library</p><h2 id="composer-title">Create a story</h2></div><button className="admin-primary-button" type="submit" disabled={isSaving} style={{ whiteSpace: 'nowrap' }}><PenLine size={16} /> {isSaving ? "Saving..." : form.published ? "Publish story" : "Save draft"}</button></div><label>Headline<input name="title" value={form.title} onChange={updateForm} required /></label><label>Journalist / author<input name="author" value={form.author} onChange={updateForm} placeholder="e.g. Aminata Kamara" required /></label><label>Excerpt<textarea name="excerpt" value={form.excerpt} onChange={updateForm} rows="2" required /></label><label>Story content<textarea name="content" value={form.content} onChange={updateForm} rows="4" required /></label><div className="admin-form-grid"><label>Category<select value={isAddingCategory ? "__new__" : form.category} onChange={updateCategory}>{categoryOptions.map((category) => <option key={category}>{category}</option>)}<option value="__new__">+ Add new category</option></select></label>{isAddingCategory && <label>New category<input name="category" value={form.category} onChange={updateForm} placeholder="e.g. Climate" minLength="2" maxLength="40" required /></label>}<label>Location<input name="location" value={form.location} onChange={updateForm} /></label></div><label>Image URL<input name="image" value={form.image} onChange={updateForm} placeholder="https://..." /></label><div className="admin-form-checks"><label><input type="checkbox" name="published" checked={form.published} onChange={updateForm} /> Publish now</label><label><input type="checkbox" name="featured" checked={form.featured} onChange={updateForm} /> Featured</label><label><input type="checkbox" name="isAd" checked={form.isAd} onChange={updateForm} /> Mark as Advertisement</label></div>
-{form.isAd && <label>Ad Destination URL<input name="adLink" value={form.adLink} onChange={updateForm} placeholder="https://example.com" /></label>}
-</form></div>}
-{isComposerOpen && <label className="admin-upload-dock">Upload story image<input type="file" accept="image/png,image/jpeg,image/webp,image/gif" onChange={uploadImage} disabled={isUploadingImage} />{isUploadingImage && <small>Uploading image...</small>}{form.image && <img src={form.image} alt="Selected story preview" />}</label>}
+      {isComposerOpen && (
+  <>
+    <div className="admin-modal-backdrop" role="presentation" onClick={() => setIsComposerOpen(false)}>
+      <form className="admin-composer admin-story-form" onSubmit={saveStory} role="dialog" aria-modal="true" aria-labelledby="composer-title" onClick={(event) => event.stopPropagation()}>
+        <button className="admin-modal-close" type="button" onClick={() => setIsComposerOpen(false)} aria-label="Close"><X size={19} /></button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem', marginBottom: '1.5rem' }}>
+          <div style={{ flex: 1 }}><p className="admin-panel-kicker">Content library</p><h2 id="composer-title">Create a story</h2></div>
+          <button className="admin-primary-button" type="submit" disabled={isSaving} style={{ whiteSpace: 'nowrap' }}><PenLine size={16} /> {isSaving ? "Saving..." : form.published ? "Publish story" : "Save draft"}</button>
+        </div>
+        <label>Headline<input name="title" value={form.title} onChange={updateForm} required /></label>
+        <label>Journalist / author<input name="author" value={form.author} onChange={updateForm} placeholder="e.g. Aminata Kamara" required /></label>
+        <label>Excerpt<textarea name="excerpt" value={form.excerpt} onChange={updateForm} rows="2" required /></label>
+        <label>Story content<textarea name="content" value={form.content} onChange={updateForm} rows="4" required /></label>
+        <div className="admin-form-grid">
+          <label>Category<select value={isAddingCategory ? "__new__" : form.category} onChange={updateCategory}>{categoryOptions.map((category) => <option key={category}>{category}</option>)}<option value="__new__">+ Add new category</option></select></label>
+          {isAddingCategory && <label>New category<input name="category" value={form.category} onChange={updateForm} placeholder="e.g. Climate" minLength="2" maxLength="40" required /></label>}
+          <label>Location<input name="location" value={form.location} onChange={updateForm} /></label>
+        </div>
+        <label>Image URL<input name="image" value={form.image} onChange={updateForm} placeholder="https://..." /></label>
+        <label>Video URL<input name="videoUrl" value={form.videoUrl} onChange={updateForm} placeholder="https://..." /></label>
+        <label>Audio URL<input name="audioUrl" value={form.audioUrl} onChange={updateForm} placeholder="https://..." /></label>
+        <div className="admin-form-checks">
+          <label><input type="checkbox" name="published" checked={form.published} onChange={updateForm} /> Publish now</label>
+          <label><input type="checkbox" name="featured" checked={form.featured} onChange={updateForm} /> Featured</label>
+          <label><input type="checkbox" name="isAd" checked={form.isAd} onChange={updateForm} /> Mark as Advertisement</label>
+        </div>
+        {form.isAd && <label>Ad Destination URL<input name="adLink" value={form.adLink} onChange={updateForm} placeholder="https://example.com" /></label>}
+      </form>
+    </div>
+    <label className="admin-upload-dock">
+      Upload story image
+      <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" onChange={uploadImage} disabled={isUploadingImage} />
+      {isUploadingImage && <small>Uploading image...</small>}
+      {form.image && <img src={form.image} alt="Selected story preview" />}
+    </label>
+    <label className="admin-upload-dock">
+      Upload story video
+      <input type="file" accept="video/mp4,video/webm" onChange={uploadVideo} disabled={isUploadingVideo} />
+      {isUploadingVideo && <small>Uploading video...</small>}
+      {form.videoUrl && <small className="text-green-600">Video uploaded successfully!</small>}
+    </label>
+    <label className="admin-upload-dock">
+      Upload story audio
+      <input type="file" accept="audio/mpeg,audio/wav" onChange={uploadAudio} disabled={isUploadingAudio} />
+      {isUploadingAudio && <small>Uploading audio...</small>}
+      {form.audioUrl && <small className="text-green-600">Audio uploaded successfully!</small>}
+    </label>
+  </>
+)}
     </div>
   );
 }
