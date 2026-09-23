@@ -27,15 +27,15 @@ export default function NewsCard({ article, variant = "default" }) {
           alt=""
           className={
             isCompact
-              ? "h-full w-full rounded-lg object-cover"
+              ? "h-full w-full object-cover"
               : isFeatured
-                ? "h-62 w-full object-cover"
-                : "h-42 w-full object-cover"
+                ? "h-full w-full object-cover"
+                : "h-full w-full object-cover"
           }
         />
       </div>
 
-      <div className={isCompact ? "min-w-0" : "p-5"}>
+      <div className={isCompact ? "min-w-0" : "p-4"}>
         <p className="text-xs font-bold uppercase tracking-wider text-green-700">
           {article.category}
         </p>

@@ -13,7 +13,15 @@ export default function LatestNews() {
   }, []);
 
   return (
-    <div className="grid gap-3 sm:grid-cols-4 lg:grid-cols-5">
+    <section className="home-latest-section">
+      <div className="home-category-heading">
+        <div>
+          <p className="home-kicker">Just in</p>
+          <h2>Latest stories</h2>
+        </div>
+        <span className="home-feed-status">Updated throughout the day</span>
+      </div>
+      <div className="home-latest-grid">
       {latestNews.map((article, index) => (
         <React.Fragment key={article._id || article.id || `${article.title}-${index}`}>
           {article.isAd ? (
@@ -25,13 +33,11 @@ export default function LatestNews() {
               link={article.adLink || `/article/${article._id || article.id}`}
             />
           ) : (
-            <NewsCard
-              article={article}
-              index={index}
-            />
+              <NewsCard article={article} index={index} />
           )}
         </React.Fragment>
       ))}
-    </div>
+      </div>
+    </section>
   );
 }
