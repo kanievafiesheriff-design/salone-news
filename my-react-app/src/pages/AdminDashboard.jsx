@@ -266,14 +266,31 @@ function AdminDashboard() {
     if (!url) return;
     setForm((current) => ({ ...current, images: [...current.images, url] }));
   };
-\n  const togglePublished = async (story) => {\n    setActionError("");\n    if (story.isAd && story.published === false && (!story.images || story.images.length === 0) && !story.image) {\n      setActionError("Advertisements must have an image to be published.");\n      return;\n    }\n    try {\n      const response = await updateAdminNews(story._id || story.id, {\n        published: story.published === false,\n      });\n      setStories((current) =>\n        current.map((item) =>\n          item._id === story._id || item.id === story.id ? response.data : item\n        )\n      );\n    } catch (error) {\n      setActionError(error.message);\n    }\n  };\n    setActionError("");
-    if (story.isAd && story.published === false && !story.image) {
+  const togglePublished = async (story) => {
+    setActionError("");
+
+    if (
+      story.isAd &&
+      story.published === false &&
+      (!story.images || story.images.length === 0) &&
+      !story.image
+    ) {
       setActionError("Advertisements must have an image to be published.");
       return;
     }
+
     try {
-      const response = await updateAdminNews(story._id || story.id, { published: story.published === false });
-      setStories((current) => current.map((item) => (item._id === story._id || item.id === story.id ? response.data : item)));
+      const response = await updateAdminNews(story._id || story.id, {
+        published: story.published === false,
+      });
+
+      setStories((current) =>
+        current.map((item) =>
+          item._id === story._id || item.id === story.id
+            ? response.data
+            : item
+        )
+      );
     } catch (error) {
       setActionError(error.message);
     }
