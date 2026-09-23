@@ -8,7 +8,7 @@ import {
   Download,
 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
-import { getShareUrl } from "../utils/shareUtils";
+import { getShareUrl, shareWithFile } from "../utils/shareUtils";
 
 // Facebook icon
 const FacebookIcon = (props) => (
@@ -196,6 +196,19 @@ export default function Article() {
           property="og:type"
           content="article"
         />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content={article.title || ""}
+        />
+        <meta
+          name="twitter:description"
+          content={article.excerpt || ""}
+        />
+        <meta
+          name="twitter:image"
+          content={articleImage}
+        />
       </Helmet>
 
       <p className="text-sm font-bold uppercase tracking-wider text-green-700">
@@ -218,6 +231,25 @@ export default function Article() {
         <span className="text-xs font-bold uppercase text-gray-400">
           Share story:
         </span>
+
+        <button
+          onClick={async () => {
+            try {
+              await shareWithFile(
+                article.title,
+                article.excerpt || "",
+                shareUrl,
+                articleImage
+              );
+            } catch (e) {
+              console.error("Native share failed, use individual buttons", e);
+            }
+          }}
+          className="flex items-center gap-2 rounded-full bg-green-700 px-3 py-1.5 text-xs font-bold text-white transition hover:bg-green-800"
+        >
+          <Share2 size={14} />
+          Share Now
+        </button>
 
         <a
           href={getShareUrl(
