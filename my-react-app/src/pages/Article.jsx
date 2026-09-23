@@ -2,9 +2,22 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import news from "../data/news";
 import { getArticle } from "../services/newsApi";
-import { Share2, MessageCircle, Download, ChevronLeft, ChevronRight, Facebook, Twitter } from "lucide-react";
+import { Share2, MessageCircle, Download, ChevronLeft, ChevronRight } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { getShareUrl } from "../utils/shareUtils";
+
+// Inline brand icons (lucide-react removed Facebook/Twitter exports)
+const FacebookIcon = (props) => (
+	<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" {...props}>
+		<path d="M13.5 21.9v-7.9h2.7l.4-3.1h-3.1V8.7c0-.9.3-1.5 1.6-1.5h1.6V4.4c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.4-4 4.1v2.4H7.6v3.1h2.7v7.9h3.2z" />
+	</svg>
+);
+
+const XIcon = (props) => (
+	<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" {...props}>
+		<path d="M17.7 3H21l-7.1 8.1L22 21h-6.6l-5.2-6.8L4.3 21H1l7.6-8.7L2 3h6.8l4.7 6.2L17.7 3zm-1.2 16h1.8L7.7 4.9H5.8L16.5 19z" />
+	</svg>
+);
 
 export default function Article() {
 	const { id } = useParams();
@@ -70,7 +83,7 @@ export default function Article() {
 			<h1 className="mt-3 text-4xl font-bold leading-tight text-gray-900 md:text-5xl">{article.title}</h1>
 			<p className="mt-4 text-sm text-gray-500">{article.date} · {article.author} · {article.location}</p>
 
-			<div className="mt-6 flex items-center gap-3">
+			<div className="mt-6 flex flex-wrap items-center gap-3">
 				<span className="text-xs font-bold uppercase text-gray-400">Share story:</span>
 				<a
 					href={getShareUrl('whatsapp', shareUrl, article.title)}
@@ -87,7 +100,7 @@ export default function Article() {
 					rel="noopener noreferrer"
 					className="flex items-center gap-2 rounded-full bg-[#1877F2] px-3 py-1.5 text-xs font-bold text-white transition hover:bg-[#145DBF]"
 				>
-					<Facebook size={14} />
+					<FacebookIcon />
 					Facebook
 				</a>
 				<a
@@ -96,7 +109,7 @@ export default function Article() {
 					rel="noopener noreferrer"
 					className="flex items-center gap-2 rounded-full bg-black px-3 py-1.5 text-xs font-bold text-white transition hover:bg-gray-800"
 				>
-					<Twitter size={14} />
+					<XIcon />
 					X
 				</a>
 				<button
