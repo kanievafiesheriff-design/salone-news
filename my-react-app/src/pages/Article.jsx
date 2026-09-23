@@ -77,64 +77,7 @@ export default function Article() {
   };
 
   useEffect(() => {
-    let cancelled = false;
-
-    async function loadArticle() {
-      setIsLoading(true);
-
-      try {
-        let response;
-
-        /*
-         * First try the ID endpoint.
-         *
-         * Example:
-         * /api/news/68abc123...
-         */
-        try {
-          response = await getArticle(id);
-        } catch (idError) {
-          /*
-           * If that fails, try the slug endpoint.
-           *
-           * Example:
-           * /api/news/slug/my-news-story
-           */
-          response = await getArticleBySlug(id);
-        }
-
-        if (!cancelled) {
-          const backendArticle =
-            response?.data || response?.article || response;
-
-          if (backendArticle) {
-            setArticle(backendArticle);
-          }
-        }
-      } catch (error) {
-        console.error("Unable to load article:", error);
-
-        /*
-         * Keep the local news.js article if one exists.
-         * This prevents the page from immediately becoming
-         * "Story not found" when the backend request fails.
-         */
-      } finally {
-        if (!cancelled) {
-          setIsLoading(false);
-        }
-      }
-    }
-
-    if (id) {
-      loadArticle();
-    } else {
-      setIsLoading(false);
-    }
-
-    return () => {
-      cancelled = true;
-    };
+    setIsLoading(false);
   }, [id]);
 
   if (isLoading && !article) {
