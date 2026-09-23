@@ -9,19 +9,26 @@ import React, { useEffect } from 'react';
  */
 const GoogleAdComponent = ({ slot, format = 'auto', responsive = 'true' }) => {
   useEffect(() => {
-    try {
-      // This tells Google to find the <ins> tag and fill it with an ad
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (e) {
-      // AdSense can throw errors if slots are filled or if scripts are blocked
-      console.error("AdSense error:", e);
-    }
+    // Add a small delay to ensure the DOM has calculated the layout
+    // and the container width is not 0.
+    const timer = setTimeout(() => {
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) {
+        // Silently handle "All slots filled" errors, only log actual issues
+        if (!e.message?.includes("All slots filled")) {
+          console.error("AdSense error:", e);
+        }
+      }
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div className="my-6 flex justify-center overflow-hidden w-full">
+    <div className="my-6 flex justify-center overflow-hidden w-full" style={{ minHeight: '100px', minWidth: '250px' }}>
       <ins className="adsbygoogle"
-           style={{ display: 'block' }}
+           style={{ display: 'block', width: '100%' }}
            data-ad-client="ca-pub-5265234750848502"
            data-ad-slot={slot}
            data-ad-format={format}
