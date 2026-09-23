@@ -25,10 +25,10 @@ export default function Navbar() {
         duration: 0.5,
         ease: "easeOut",
       }}
-      className="sticky top-0 z-40 hidden border-b border-gray-200 bg-white/95 shadow-sm backdrop-blur-md md:block"
+      className="site-nav sticky top-0 z-40 hidden md:block"
     >
-      <div className="mx-auto max-w-7xl px-4">
-        <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
+      <div className="site-nav__inner">
+        <div className="site-nav__links">
 
           {categories.map(([name, path], index) => {
             const isActive =
@@ -47,15 +47,15 @@ export default function Navbar() {
               >
                 <Link
                   to={path}
-                  className="group relative block whitespace-nowrap px-4 py-4 text-sm font-semibold"
+                  className="site-nav__link group relative block whitespace-nowrap"
                 >
                   {/* Text */}
                   <motion.span
                     animate={{
-                      color: isActive ? "#15803d" : "#374151",
+                      color: isActive ? "#d9573c" : "#34413c",
                     }}
                     whileHover={{
-                      color: "#15803d",
+                      color: "#d9573c",
                     }}
                     transition={{ duration: 0.2 }}
                   >
@@ -64,7 +64,7 @@ export default function Navbar() {
 
                   {/* Active / Hover underline */}
                   <motion.span
-                    className="absolute bottom-0 left-3 right-3 h-[3px] rounded-full bg-green-700"
+                    className="site-nav__underline absolute bottom-0"
                     initial={false}
                     animate={{
                       scaleX: isActive ? 1 : 0,
@@ -82,7 +82,7 @@ export default function Navbar() {
 
                   {/* Hover background */}
                   <motion.span
-                    className="absolute inset-1 -z-10 rounded-lg bg-green-50"
+                    className="absolute inset-0 -z-10 bg-[#f0f1eb]"
                     initial={{ opacity: 0, scale: 0.9 }}
                     whileHover={{
                       opacity: 1,

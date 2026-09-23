@@ -13,7 +13,7 @@ export default function BreakingNews() {
   }, []);
 
   return (
-    <div className="bg-red-600 text-white overflow-hidden">
+    <div className="site-breaking overflow-hidden">
       <style>{`
         @keyframes marquee {
           0% { transform: translateX(100%); }
@@ -28,8 +28,8 @@ export default function BreakingNews() {
           animation-play-state: paused;
         }
       `}</style>
-      <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-2">
-        <span className="shrink-0 text-xs font-bold uppercase z-10 bg-red-600 pr-2">
+      <div className="site-breaking__inner">
+        <span className="site-breaking__label shrink-0">
           Breaking News
         </span>
 
