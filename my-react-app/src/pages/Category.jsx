@@ -2,8 +2,16 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { ArrowUpRight, Clock3, MapPin } from "lucide-react";
 import { getNewsByCategory } from "../services/newsApi";
 import news from "../data/news";
+import "../styles/Category.css";
+
+const fallbackImage = "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=85";
+
+function imageFor(article) {
+  return article?.images?.[0] || article?.imageUrl || article?.image || fallbackImage;
+}
 
 export default function Category() {
   const { category } = useParams();
@@ -42,27 +50,23 @@ export default function Category() {
       });
   }, [category]);
 
-  const categoryName =
-    category.charAt(0).toUpperCase() + category.slice(1);
+  const categoryName = category
+    ? category.charAt(0).toUpperCase() + category.slice(1)
+    : "News";
+  const leadStory = categoryNews[0];
+  const supportingStories = categoryNews.slice(1, 3);
+  const remainingStories = categoryNews.slice(3);
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <section className="bg-white border-b">
-        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-          <span className="text-sm font-bold uppercase tracking-wider text-green-700">
-            SLNEWSBLOG
-          </span>
-
-          <h1 className="mt-2 text-4xl font-extrabold text-gray-900">
-            {categoryName} News
-          </h1>
-
-          <p className="mt-3 max-w-2xl text-gray-500">
-            Latest {categoryName.toLowerCase()} news, stories,
-            updates and developments from Sierra Leone and beyond.
-          </p>
+    <main className="category-page">
+      <section className="category-masthead">
+        <div>
+          <p className="category-kicker">SLNEWSBLOG / Section</p>
+          <h1>{categoryName}</h1>
         </div>
+        <p className="category-description">
+          The latest {categoryName.toLowerCase()} news, reporting, and context from Sierra Leone and beyond.
+        </p>
       </section>
 
       {/* Articles */}
@@ -100,49 +104,68 @@ export default function Category() {
             </Link>
           </div>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {categoryNews.map((article, index) => (
-              <motion.article
-                key={article._id || article.id}
-                initial={{ opacity: 0, y: 25 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.4,
-                  delay: index * 0.05,
-                }}
-                className="overflow-hidden rounded-xl bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
-              >
-                <Link to={`/article/${article._id || article.id}`}>
-                  <div className="h-40 overflow-hidden">
-                    <img
-                      src={article.image?.trim() || "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=900&q=80"}
-                      alt={article.title}
-                      className="h-full w-full object-cover transition duration-500 hover:scale-105"
-                    />
-                  </div>
+          <>
+            <div className="category-layout">
+            {leadStory && (
+              <Link to={`/article/${leadStory._id || leadStory.id}`} className="category-lead">
+                <div className="category-lead__image">
+                  <img src={imageFor(leadStory)} alt={leadStory.title} />
+                  <span className="category-label">Lead story</span>
+                </div>
+                <div className="category-lead__copy">
+                  <p className="category-kicker">{leadStory.category} / {leadStory.date}</p>
+                  <h2>{leadStory.title}</h2>
+                  <p>{leadStory.excerpt}</p>
+                  <span className="category-read">Read full story <ArrowUpRight size={16} /></span>
+                </div>
+              </Link>
+            )}
 
-                  <div className="p-4">
-                    <span className="text-xs font-bold uppercase text-green-700">
-                      {article.category}
-                    </span>
-
-                    <h2 className="mt-2 line-clamp-2 text-lg font-bold text-gray-900 hover:text-green-700">
-                      {article.title}
-                    </h2>
-
-                    <p className="mt-3 line-clamp-3 text-sm leading-6 text-gray-500">
-                      {article.excerpt}
-                    </p>
-
-                    <div className="mt-5 flex justify-between text-xs text-gray-500">
-                      <span>{article.author}</span>
-                      <span>{article.date}</span>
-                    </div>
+            <div className="category-supporting">
+              <div className="category-section-line"><span>In focus</span><span>{categoryNews.length} stories</span></div>
+              {supportingStories.map((article) => (
+                <Link key={article._id || article.id} to={`/article/${article._id || article.id}`} className="category-brief">
+                  <img src={imageFor(article)} alt="" />
+                  <div>
+                    <p className="category-kicker">{article.category}</p>
+                    <h3>{article.title}</h3>
+                    <span className="category-meta"><Clock3 size={13} /> {article.time || article.date}</span>
                   </div>
                 </Link>
-              </motion.article>
-            ))}
-          </div>
+              ))}
+            </div>
+            </div>
+
+          {remainingStories.length > 0 && (
+            <section className="category-latest">
+              <div className="category-section-heading">
+                <div><p className="category-kicker">The latest</p><h2>More {categoryName} reporting</h2></div>
+                <span><MapPin size={14} /> Sierra Leone</span>
+              </div>
+              <div className="category-grid">
+                {remainingStories.map((article, index) => (
+                  <motion.article
+                    key={article._id || article.id}
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.35, delay: index * 0.05 }}
+                    className="category-card"
+                  >
+                    <Link to={`/article/${article._id || article.id}`}>
+                      <div className="category-card__image"><img src={imageFor(article)} alt={article.title} /></div>
+                      <div className="category-card__copy">
+                        <p className="category-kicker">{article.category}</p>
+                        <h3>{article.title}</h3>
+                        <p>{article.excerpt}</p>
+                        <span className="category-card__meta">{article.author || "SLNEWSBLOG"}<span>{article.date}</span></span>
+                      </div>
+                    </Link>
+                  </motion.article>
+                ))}
+              </div>
+            </section>
+            )}
+          </>
         )}
       </section>
     </main>
