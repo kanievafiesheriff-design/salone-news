@@ -4,7 +4,9 @@ export default function NewsCard({ article, variant = "default" }) {
   const isFeatured = variant === "featured";
   const isCompact = variant === "compact";
   const articleId = article._id || article.id;
-  const image = article.image?.trim() || "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=900&q=80";
+  const image = (article.images && article.images.length > 0)
+    ? article.images[0]
+    : (article.image?.trim() || "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=900&q=80");
 
   return (
     <Link

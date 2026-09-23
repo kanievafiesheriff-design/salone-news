@@ -30,7 +30,7 @@ export default function AdminLogin() {
 
   return (
     <main className="admin-login-page">
-      <section className="admin-login-art"><span className="admin-login-mark">SN</span><div><p>Salone News</p><h1>The desk behind<br />the daily story.</h1><span>Editorial workspace · Freetown</span></div></section>
+      <section className="admin-login-art"><span className="admin-login-mark">SN</span><div><p>SLNEWSBLOG</p><h1>The desk behind<br />the daily story.</h1><span>Editorial workspace · Freetown</span></div></section>
       <section className="admin-login-form-wrap">
         <form className="admin-login-form" onSubmit={submit}>
           <div className="admin-login-icon"><LockKeyhole size={18} /></div>

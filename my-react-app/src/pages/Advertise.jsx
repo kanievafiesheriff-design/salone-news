@@ -36,7 +36,7 @@ export default function Advertise() {
       <section className="bg-green-900 text-white py-20 px-4">
         <div className="mx-auto max-w-4xl text-center">
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
-            Grow Your Brand with <span className="text-green-400">Salone News</span>
+            Grow Your Brand with <span className="text-green-400">SLNEWSBLOG</span>
           </h1>
           <p className="mt-6 text-lg text-green-100 max-w-2xl mx-auto">
             Reach thousands of engaged readers across Sierra Leone. Place your brand in front of the people who matter most.

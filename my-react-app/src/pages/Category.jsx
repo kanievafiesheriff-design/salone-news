@@ -51,7 +51,7 @@ export default function Category() {
       <section className="bg-white border-b">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <span className="text-sm font-bold uppercase tracking-wider text-green-700">
-            Salone News
+            SLNEWSBLOG
           </span>
 
           <h1 className="mt-2 text-4xl font-extrabold text-gray-900">

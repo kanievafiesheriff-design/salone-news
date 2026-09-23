@@ -34,7 +34,7 @@ export default function News() {
 		<section className="mx-auto max-w-7xl px-4 py-16">
 			<div className="mb-8 border-b border-gray-200 pb-5">
 				<p className="text-sm font-bold uppercase tracking-wider text-green-700">
-					Salone News
+					SLNEWSBLOG
 				</p>
 				<h1 className="mt-2 text-4xl font-bold text-gray-900">Latest News</h1>
 				<p className="mt-3 text-gray-600">

@@ -14,8 +14,9 @@ const news = [
     date: "September 14, 2026",
     time: "10:15 AM",
     location: "Bonthe & Tonkolili",
-    image:
+    images: [
       "https://moice.gov.sl/wp-content/uploads/2025/09/DEMBYYYY.jpg",
+    ],
     featured: true,
     trending: true,
     views: 18420,
@@ -41,8 +42,9 @@ const news = [
     date: "September 14, 2026",
     time: "9:10 AM",
     location: "Freetown",
-    image:
+    images: [
       "https://mof.gov.sl/wp-content/uploads/2026/08/005-754x286.jpeg",
+    ],
     featured: true,
     trending: true,
     views: 13760,
@@ -66,8 +68,8 @@ const news = [
     date: "September 14, 2026",
     time: "8:35 AM",
     location: "Freetown",
-    image:
-      "data:image/jpeg;base64,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",
+    images: [
+      "data:image/jpeg;base64,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",
     featured: false,
     trending: true,
     views: 10940,
@@ -116,8 +118,9 @@ const news = [
     date: "September 14, 2026",
     time: "7:30 AM",
     location: "Sierra Leone / Africa",
-    image:
+    images: [
       "https://www.africell.sl/wp-content/uploads/2023/10/SL-News-1.jpg",
+    ],
     featured: true,
     trending: true,
     views: 16480,
@@ -166,8 +169,9 @@ const news = [
     date: "September 11, 2026",
     time: "5:15 PM",
     location: "Sierra Leone / Guinea",
-    image:
+    images: [
       "https://thecalabashnewspaper.com/wp-content/uploads/2026/03/IMG_2038-696x678.jpeg",
+    ],
     featured: false,
     trending: true,
     views: 9470,
@@ -191,8 +195,9 @@ const news = [
     date: "September 14, 2026",
     time: "4:20 PM",
     location: "Freetown",
-    image:
+    images: [
       "https://statehouse.gov.sl/wp-content/uploads/2026/09/WhatsApp-Image-2026-09-07-at-22.31.02-1024x587.jpeg",
+    ],
     featured: false,
     trending: true,
     views: 11620,
@@ -216,8 +221,9 @@ const news = [
     date: "September 14, 2026",
     time: "3:40 PM",
     location: "Freetown",
-    image:
+    images: [
       "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1600&q=85",
+    ],
     featured: false,
     trending: false,
     views: 7210,
@@ -241,8 +247,9 @@ const news = [
     date: "September 14, 2026",
     time: "2:55 PM",
     location: "Freetown",
-    image:
+    images: [
       "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=1600&q=85",
+    ],
     featured: false,
     trending: false,
     views: 6380,
@@ -266,8 +273,9 @@ const news = [
     date: "September 11, 2026",
     time: "1:45 PM",
     location: "Western Area Rural",
-    image:
+    images: [
       "https://scontent.ffna1-2.fna.fbcdn.net/v/t39.30808-6/796449858_1131177282915670_7577968782646803052_n.jpg?stp=dst-jpg_tt6&cstp=mx1080x720&ctp=s1080x720&_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_ohc=UoftGRJiIYUQ7kNvwHWX7HP&_nc_oc=Adpw7QA5nHVjH64q1OR1FAlzOLWF6SSRHhR484w_N4kSmfcM9KekUYB2BLcS28mPzZg&_nc_zt=23&_nc_ht=scontent.ffna1-2.fna&_nc_gid=K_KhoA2OSjCHx5Q07rUVDg&_nc_ss=7a289&oh=00_AQLQt09jptdLjLDKnHeTiaFTOdll31qPqAbvBt8LsYFYGw&oe=6AB0A7C5",
+    ],
     featured: false,
     trending: true,
     views: 8240,
@@ -291,8 +299,9 @@ const news = [
     date: "September 11, 2026",
     time: "12:30 PM",
     location: "Sierra Leone / Guinea",
-    image:
+    images: [
       "https://truthmedia.sl/wp-content/uploads/2026/09/Salone-Guinea-Agree-1280x640.jpg",
+    ],
     featured: false,
     trending: false,
     views: 5920,
@@ -316,8 +325,9 @@ const news = [
     date: "September 9, 2026",
     time: "11:10 AM",
     location: "Kingtom, Freetown",
-    image:
+    images: [
       "https://images.unsplash.com/photo-1453873531674-2151bcd01707?auto=format&fit=crop&w=1600&q=85",
+    ],
     featured: false,
     trending: true,
     views: 10180,
@@ -341,8 +351,9 @@ const news = [
     date: "September 9, 2026",
     time: "10:20 AM",
     location: "Freetown",
-    image:
+    images: [
       "https://slaj.sl/wp-content/uploads/2026/06/cropped-SLAJ-Logo.png",
+    ],
     featured: false,
     trending: true,
     views: 9340,

@@ -47,7 +47,7 @@ export default function About() {
             className="max-w-4xl"
           >
             <p className="mb-5 text-sm font-bold uppercase tracking-[0.2em] text-green-400">
-              About Salone News
+              About SLNEWSBLOG
             </p>
 
             <h1 className="text-4xl font-black leading-tight sm:text-5xl lg:text-7xl">
@@ -56,7 +56,7 @@ export default function About() {
             </h1>
 
             <p className="mt-7 max-w-2xl text-lg leading-8 text-gray-300 sm:text-xl">
-              Salone News is an independent newsroom telling clear,
+              SLNEWSBLOG is an independent newsroom telling clear,
               thoughtful stories about Sierra Leone and the people building
               its future.
             </p>
@@ -126,7 +126,7 @@ export default function About() {
               <p>
                 Our country is changing quickly. New ideas are taking root in
                 Freetown, provincial towns, and communities across the country.
-                Salone News follows those changes with reporting that is
+                SLNEWSBLOG follows those changes with reporting that is
                 grounded, curious, and made for real life.
               </p>
 
@@ -286,7 +286,7 @@ export default function About() {
             </h2>
 
             <p className="mt-3 text-gray-500">
-              Have a story, correction, tip or question for Salone News?
+              Have a story, correction, tip or question for SLNEWSBLOG?
             </p>
           </div>
 

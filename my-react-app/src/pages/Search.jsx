@@ -5,8 +5,8 @@ export default function Search() {
       <input
         className="mt-6 w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-green-600"
         type="search"
-        placeholder="Search Salone News"
-        aria-label="Search Salone News"
+        placeholder="Search SLNEWSBLOG"
+        aria-label="Search SLNEWSBLOG"
       />
     </section>
   );

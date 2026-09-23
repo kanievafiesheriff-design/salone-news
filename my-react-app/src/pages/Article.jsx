@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import news from "../data/news";
 import { getArticle } from "../services/newsApi";
-import { Share2, MessageCircle, Download } from "lucide-react";
+import { Share2, MessageCircle, Download, ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function Article() {
 	const { id } = useParams();

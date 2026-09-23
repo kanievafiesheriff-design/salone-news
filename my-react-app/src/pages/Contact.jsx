@@ -64,7 +64,7 @@ export default function Contact() {
             </p>
 
             <h1 className="text-4xl font-bold sm:text-5xl">
-              Contact Salone News
+              Contact SLNEWSBLOG
             </h1>
 
             <p className="mt-5 max-w-2xl text-lg leading-8 text-gray-300">
@@ -90,7 +90,7 @@ export default function Contact() {
           </h2>
 
           <p className="mt-3 leading-7 text-gray-600">
-            Reach the Salone News team for news tips, editorial inquiries,
+            Reach the SLNEWSBLOG team for news tips, editorial inquiries,
             corrections, partnerships, and general questions.
           </p>
 
@@ -98,7 +98,7 @@ export default function Contact() {
             <ContactItem
               icon={Mail}
               title="Email"
-              value="vafiesheriff4@gmail"
+              value="slnewsblog@info"
             />
 
             <ContactItem
@@ -123,7 +123,7 @@ export default function Contact() {
           {/* Social media */}
           <div className="mt-10">
             <h3 className="font-semibold text-gray-900">
-              Follow Salone News
+              Follow SLNEWSBLOG
             </h3>
 
             <div className="mt-4 flex gap-3">

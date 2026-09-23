@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 md:grid-cols-3">
         <div>
           <h2 className="text-2xl font-bold text-green-500">
-            Salone News
+            SLNEWSBLOG
           </h2>
 
           <p className="mt-3 text-sm leading-6 text-gray-400">
@@ -40,7 +40,7 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-gray-800 py-5 text-center text-sm text-gray-500">
-        © 2026 Salone News. All rights reserved.
+        © 2026 SLNEWSBLOG. All rights reserved.
       </div>
     </footer>
   );

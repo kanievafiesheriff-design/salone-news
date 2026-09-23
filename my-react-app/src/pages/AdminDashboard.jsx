@@ -19,6 +19,7 @@ import {
   TrendingUp,
   Users,
   X,
+  Upload,
 } from "lucide-react";
 import news from "../data/news";
 import AuthContext from "../context/AuthContext";
@@ -73,7 +74,7 @@ function AdminDashboard() {
   const [pendingAudio, setPendingAudio] = useState(null);
   const [breakingNewsText, setBreakingNewsText] = useState("");
   const { signOut, user } = useContext(AuthContext);
-  const [form, setForm] = useState({ title: "", excerpt: "", content: "", category: "Politics", author: user?.name || "Vafie Sheriff", image: "", videoUrl: "", audioUrl: "", location: "Freetown", published: false, featured: false, trending: false, isAd: false, adLink: "" });
+  const [form, setForm] = useState({ title: "", excerpt: "", content: "", category: "Politics", author: user?.name || "Vafie Sheriff", images: [], videoUrl: "", audioUrl: "", location: "Freetown", published: false, featured: false, trending: false, isAd: false, adLink: "" });
 
   useEffect(() => {
     getAdminNews({ limit: 50 })
@@ -137,7 +138,7 @@ function AdminDashboard() {
     setActionError("");
     try {
       const response = await uploadAdminImage(file);
-      setForm((current) => ({ ...current, image: response.imageUrl }));
+      setForm((current) => ({ ...current, images: [...current.images, response.imageUrl] }));
     } catch (error) {
       setActionError(error.message);
     } finally {
@@ -196,10 +197,15 @@ function AdminDashboard() {
     try {
       let article = { ...form };
 
-      if (pendingImage && !form.image) {
+      if (pendingImage && (!form.images || form.images.length === 0)) {
         setIsUploadingImage(true);
         const uploadResponse = await uploadAdminImage(pendingImage);
-        article.image = uploadResponse.imageUrl;
+        article.images = [uploadResponse.imageUrl];
+        setIsUploadingImage(false);
+      } else if (pendingImage && form.images) {
+        setIsUploadingImage(true);
+        const uploadResponse = await uploadAdminImage(pendingImage);
+        article.images = [...form.images, uploadResponse.imageUrl];
         setIsUploadingImage(false);
       }
 
@@ -217,7 +223,7 @@ function AdminDashboard() {
         setIsUploadingAudio(false);
       }
 
-      if (article.isAd && article.published && !article.image) {
+      if (article.isAd && article.published && (!article.images || article.images.length === 0)) {
         throw new Error("Advertisements must have an image to be published.");
       }
 
@@ -228,7 +234,7 @@ function AdminDashboard() {
       setPendingImage(null);
       setPendingVideo(null);
       setPendingAudio(null);
-      setForm({ title: "", excerpt: "", content: "", category: "Politics", author: user?.name || "Vafie Sheriff", image: "", videoUrl: "", audioUrl: "", location: "Freetown", published: false, featured: false, trending: false });
+      setForm({ title: "", excerpt: "", content: "", category: "Politics", author: user?.name || "Vafie Sheriff", images: [], videoUrl: "", audioUrl: "", location: "Freetown", published: false, featured: false, trending: false });
     } catch (error) {
       setActionError(error.message);
     } finally {
@@ -239,7 +245,27 @@ function AdminDashboard() {
     }
   };
 
-  const togglePublished = async (story) => {
+  const removeImage = (index) => {
+    setForm((current) => ({
+      ...current,
+      images: current.images.filter((_, i) => i !== index),
+    }));
+  };
+
+  const moveImage = (index, direction) => {
+    setForm((current) => {
+      const newImages = [...current.images];
+      const targetIndex = index + direction;
+      if (targetIndex < 0 || targetIndex >= newImages.length) return current;
+      [newImages[index], newImages[targetIndex]] = [newImages[targetIndex], newImages[index]];
+      return { ...current, images: newImages };
+    });
+  };
+
+  const addImageUrl = (url) => {
+    if (!url) return;
+    setForm((current) => ({ ...current, images: [...current.images, url] }));
+  };
     setActionError("");
     if (story.isAd && story.published === false && !story.image) {
       setActionError("Advertisements must have an image to be published.");
@@ -273,7 +299,7 @@ function AdminDashboard() {
         <div className="admin-brand">
           <div className="admin-brand-mark">SN</div>
           <div>
-            <strong>Salone News</strong>
+            <strong>SLNEWSBLOG</strong>
             <span>Editorial desk</span>
           </div>
         </div>
@@ -474,9 +500,69 @@ function AdminDashboard() {
           {isAddingCategory && <label>New category<input name="category" value={form.category} onChange={updateForm} placeholder="e.g. Climate" minLength="2" maxLength="40" required /></label>}
           <label>Location<input name="location" value={form.location} onChange={updateForm} /></label>
         </div>
-        <label>Image URL<input name="image" value={form.image} onChange={updateForm} placeholder="https://..." /></label>
-        <label>Video URL<input name="videoUrl" value={form.videoUrl} onChange={updateForm} placeholder="https://..." /></label>
-        <label>Audio URL<input name="audioUrl" value={form.audioUrl} onChange={updateForm} placeholder="https://..." /></label>
+        <div className="admin-gallery-section">
+          <label>Article Images</label>
+          <div className="admin-image-grid">
+            {form.images.map((img, index) => (
+              <div key={index} className="admin-image-item">
+                <img src={img} alt={`Preview ${index + 1}`} />
+                <div className="admin-image-controls">
+                  <button type="button" onClick={() => moveImage(index, -1)} disabled={index === 0} title="Move Up">↑</button>
+                  <button type="button" onClick={() => moveImage(index, 1)} disabled={index === form.images.length - 1} title="Move Down">↓</button>
+                  <button type="button" onClick={() => removeImage(index)} className="admin-delete-btn" title="Remove">×</button>
+                </div>
+                {index === 0 && <span className="admin-featured-badge">Featured</span>}
+              </div>
+            ))}
+          </div>
+          <div className="admin-gallery-actions">
+            <div className="admin-upload-group">
+              <input
+                type="text"
+                placeholder="Paste image URL..."
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    addImageUrl(e.target.value);
+                    e.target.value = "";
+                  }
+                }}
+              />
+            </div>
+            <label className="admin-upload-trigger">
+              <Upload size={14} /> Upload file
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp,image/gif"
+                onChange={uploadImage}
+                disabled={isUploadingImage}
+                style={{ display: "none" }}
+              />
+            </label>
+          </div>
+          {isUploadingImage && <small className="admin-upload-status">Uploading image...</small>}
+        </div>
+        <label>Video URL
+          <div className="admin-upload-group">
+            <input name="videoUrl" value={form.videoUrl} onChange={updateForm} placeholder="https://..." />
+            <label className="admin-upload-trigger">
+              <Upload size={14} /> Upload file
+              <input type="file" accept="video/mp4,video/webm" onChange={uploadVideo} disabled={isUploadingVideo} />
+            </label>
+          </div>
+          {isUploadingVideo && <small className="admin-upload-status">Uploading video...</small>}
+          {form.videoUrl && <small className="admin-upload-status success">Video uploaded successfully!</small>}
+        </label>
+        <label>Audio URL
+          <div className="admin-upload-group">
+            <input name="audioUrl" value={form.audioUrl} onChange={updateForm} placeholder="https://..." />
+            <label className="admin-upload-trigger">
+              <Upload size={14} /> Upload file
+              <input type="file" accept="audio/mpeg,audio/wav" onChange={uploadAudio} disabled={isUploadingAudio} />
+            </label>
+          </div>
+          {isUploadingAudio && <small className="admin-upload-status">Uploading audio...</small>}
+          {form.audioUrl && <small className="admin-upload-status success">Audio uploaded successfully!</small>}
+        </label>
         <div className="admin-form-checks">
           <label><input type="checkbox" name="published" checked={form.published} onChange={updateForm} /> Publish now</label>
           <label><input type="checkbox" name="featured" checked={form.featured} onChange={updateForm} /> Featured</label>
