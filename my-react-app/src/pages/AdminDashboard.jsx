@@ -74,7 +74,7 @@ function AdminDashboard() {
   const [pendingAudio, setPendingAudio] = useState(null);
   const [breakingNewsText, setBreakingNewsText] = useState("");
   const { signOut, user } = useContext(AuthContext);
-  const [form, setForm] = useState({ title: "", excerpt: "", content: "", category: "Politics", author: user?.name || "Vafie Sheriff", image: "", videoUrl: "", audioUrl: "", location: "Freetown", published: false, featured: false, trending: false, isAd: false, adLink: "" });
+  const [form, setForm] = useState({ title: "", excerpt: "", content: "", category: "Politics", author: user?.name || "Vafie Sheriff", image: "", location: "Freetown", published: false, featured: false, trending: false, isAd: false, adLink: "" });
 
   useEffect(() => {
     getAdminNews({ limit: 50 })
@@ -548,28 +548,6 @@ function AdminDashboard() {
           </div>
           {isUploadingImage && <small className="admin-upload-status">Uploading image...</small>}
         </div>
-        <label>Video URL
-          <div className="admin-upload-group">
-            <input name="videoUrl" value={form.videoUrl} onChange={updateForm} placeholder="https://..." />
-            <label className="admin-upload-trigger">
-              <Upload size={14} /> Upload file
-              <input type="file" accept="video/mp4,video/webm" onChange={uploadVideo} disabled={isUploadingVideo} />
-            </label>
-          </div>
-          {isUploadingVideo && <small className="admin-upload-status">Uploading video...</small>}
-          {form.videoUrl && <small className="admin-upload-status success">Video uploaded successfully!</small>}
-        </label>
-        <label>Audio URL
-          <div className="admin-upload-group">
-            <input name="audioUrl" value={form.audioUrl} onChange={updateForm} placeholder="https://..." />
-            <label className="admin-upload-trigger">
-              <Upload size={14} /> Upload file
-              <input type="file" accept="audio/mpeg,audio/wav" onChange={uploadAudio} disabled={isUploadingAudio} />
-            </label>
-          </div>
-          {isUploadingAudio && <small className="admin-upload-status">Uploading audio...</small>}
-          {form.audioUrl && <small className="admin-upload-status success">Audio uploaded successfully!</small>}
-        </label>
         <div className="admin-form-checks">
           <label><input type="checkbox" name="published" checked={form.published} onChange={updateForm} /> Publish now</label>
           <label><input type="checkbox" name="featured" checked={form.featured} onChange={updateForm} /> Featured</label>
@@ -583,18 +561,6 @@ function AdminDashboard() {
       <input type="file" accept="image/png,image/jpeg,image/webp,image/gif" onChange={uploadImage} disabled={isUploadingImage} />
       {isUploadingImage && <small>Uploading image...</small>}
       {form.image && <img src={form.image} alt="Selected story preview" />}
-    </label>
-    <label className="admin-upload-dock">
-      Upload story video
-      <input type="file" accept="video/mp4,video/webm" onChange={uploadVideo} disabled={isUploadingVideo} />
-      {isUploadingVideo && <small>Uploading video...</small>}
-      {form.videoUrl && <small className="text-green-600">Video uploaded successfully!</small>}
-    </label>
-    <label className="admin-upload-dock">
-      Upload story audio
-      <input type="file" accept="audio/mpeg,audio/wav" onChange={uploadAudio} disabled={isUploadingAudio} />
-      {isUploadingAudio && <small>Uploading audio...</small>}
-      {form.audioUrl && <small className="text-green-600">Audio uploaded successfully!</small>}
     </label>
   </>
 )}
