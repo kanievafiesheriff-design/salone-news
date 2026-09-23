@@ -221,16 +221,18 @@ export function deleteAdminNews(id) {
 
 export async function uploadAdminImage(file) {
   const body = new FormData();
-  body.append('image', file);
-  const token = localStorage.getItem('salone_token');
-  const response = await fetch(`${API_URL}/uploads/image`, {
+  body.append('file', file);
+  body.append('upload_preset', 'ml_default'); // You will need to create this preset in Cloudinary
+
+  const response = await fetch(`https://api.cloudinary.com/v1_1/duvickzu3/image/upload`, {
     method: 'POST',
-    headers: { Authorization: `Bearer ${token}` },
     body,
   });
+
   const data = await response.json();
-  if (!response.ok) throw new Error(data.message || 'Image upload failed');
-  return data;
+  if (!response.ok) throw new Error(data.error?.message || 'Image upload failed');
+
+  return { imageUrl: data.secure_url };
 }
 
 export async function uploadAdminVideo(file) {
