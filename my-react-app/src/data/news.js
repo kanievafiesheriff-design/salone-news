@@ -332,7 +332,7 @@ const news = [
     time: "11:10 AM",
     location: "Kingtom, Freetown",
     images: [
-      "https://images.unsplash.com/photo-1453873531674-2151bcd01707?auto=format&fit=crop&w=1600&q=85",
+      "https://thecalabashnewspaper.com/archives/64170",
     ],
     featured: false,
     trending: true,
@@ -364,9 +364,35 @@ const news = [
     trending: true,
     views: 9340,
     source: "The Calabash Newspaper",
-    sourceUrl: "https://thecalabashnewspaper.com/archives/64173",
+    sourceUrl: "https://slaj.sl/wp-content/uploads/2026/06/cropped-SLAJ-Logo.png",
     tags: ["SLAJ", "Press Freedom", "Free Speech", "Constitution"],
   },
+  {
+    id: 16,
+    title:
+      "PAN-SL Concludes 2026 Leadership Masterclass, Certifies 150 Young People",
+    slug:
+      "pan-sl-concludes-2026-leadership-masterclass-certifies-150-young-people",
+    excerpt:
+      "The People's Alliance for National Stability and Leadership (PAN-SL) has successfully concluded its 2026 Leadership Masterclass, equipping 150 young leaders with essential governance and leadership skills.",
+    content:
+      "The People's Alliance for National Stability and Leadership (PAN-SL) has officially concluded its intensive 2026 Leadership Masterclass, a program aimed at fostering the next generation of ethical and effective leaders in Sierra Leone. A total of 150 young men and women from across the country were certified following a rigorous training period that covered strategic planning, public administration, conflict resolution, and community development. Speaking at the closing ceremony, the program directors emphasized the importance of youth inclusion in national decision-making and urged the graduates to apply their new skills to drive sustainable development in their respective communities. The masterclass featured sessions led by seasoned policymakers and industry experts, providing participants with practical tools to navigate the complexities of modern leadership. The graduates expressed their gratitude for the opportunity, noting that the training has significantly enhanced their capacity to lead and serve with integrity.",
+    category: "Education",
+    author: "National Affairs Desk",
+    date: "September 20, 2026",
+    time: "11:00 AM",
+    location: "Freetown",
+    images: [
+      "https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=1600&q=85",
+    ],
+    featured: true,
+    trending: true,
+    views: 5400,
+    source: "The Calabash Newspaper",
+    sourceUrl: "https://thecalabashnewspaper.com/news",
+    tags: ["PAN-SL", "Leadership", "Youth", "Education"],
+  },
+
 ];
 
 export default news;
