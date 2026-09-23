@@ -244,8 +244,7 @@ export default function Article() {
               await shareWithImage(
                 article.title,
                 article.excerpt || "",
-                shareUrl,
-                articleImage
+                shareUrl
               );
             } catch (e) {
               console.error("Native share failed, use individual buttons", e);
