@@ -3,6 +3,7 @@ import NewsCard from "../components/NewsCard";
 import news from "../data/news";
 import { getNews, getAds } from "../services/newsApi";
 import AdCard from "../components/AdCard";
+import "../styles/News.css";
 
 export default function News() {
   const [articles, setArticles] = useState(news);
@@ -92,7 +93,7 @@ export default function News() {
       )}
 
       {/* News Articles */}
-      <div className="grid gap-3 sm:grid-cols-4 lg:grid-cols-4">
+      <div className="news-card-grid grid gap-3 sm:grid-cols-4 lg:grid-cols-4">
         {articles.map((article, index) => (
           <NewsCard
             key={
