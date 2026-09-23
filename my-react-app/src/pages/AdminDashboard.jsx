@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import news from "../data/news";
 import AuthContext from "../context/AuthContext";
-import { createAdminNews, deleteAdminNews, getAdminNews, updateAdminNews, uploadAdminImage, setBreakingNews, getBreakingNews, getSettings, updateSetting } from "../services/newsApi";
+import { createAdminNews, deleteAdminNews, getAdminNews, updateAdminNews, uploadAdminImage, uploadAdminVideo, uploadAdminAudio, setBreakingNews, getBreakingNews, getSettings, updateSetting } from "../services/newsApi";
 import "./AdminDashboard.css";
 // ... (rest of the imports)
 
@@ -266,7 +266,7 @@ function AdminDashboard() {
     if (!url) return;
     setForm((current) => ({ ...current, images: [...current.images, url] }));
   };
-    setActionError("");
+\n  const togglePublished = async (story) => {\n    setActionError("");\n    if (story.isAd && story.published === false && (!story.images || story.images.length === 0) && !story.image) {\n      setActionError("Advertisements must have an image to be published.");\n      return;\n    }\n    try {\n      const response = await updateAdminNews(story._id || story.id, {\n        published: story.published === false,\n      });\n      setStories((current) =>\n        current.map((item) =>\n          item._id === story._id || item.id === story.id ? response.data : item\n        )\n      );\n    } catch (error) {\n      setActionError(error.message);\n    }\n  };\n    setActionError("");
     if (story.isAd && story.published === false && !story.image) {
       setActionError("Advertisements must have an image to be published.");
       return;
