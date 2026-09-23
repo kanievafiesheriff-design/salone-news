@@ -77,7 +77,45 @@ export default function Article() {
   };
 
   useEffect(() => {
-    setIsLoading(false);
+    let cancelled = false;
+
+    async function loadArticle() {
+      setIsLoading(true);
+
+      try {
+        let response;
+        try {
+          response = await getArticle(id);
+        } catch (idError) {
+          response = await getArticleBySlug(id);
+        }
+
+        if (!cancelled) {
+          const backendArticle = response?.data || response?.article || response;
+          if (backendArticle) {
+            setArticle(backendArticle);
+          }
+          // Note: If backendArticle is null/undefined, we do NOTHING.
+          // This preserves the local mock data set in useState.
+        }
+      } catch (error) {
+        console.error("API fetch failed, falling back to local data:", error);
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    if (id) {
+      loadArticle();
+    } else {
+      setIsLoading(false);
+    }
+
+    return () => {
+      cancelled = true;
+    };
   }, [id]);
 
   if (isLoading && !article) {
