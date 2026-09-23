@@ -72,6 +72,7 @@ export default function CategoryNews({
             <p className="home-kicker">{lead.category} · {lead.date}</p>
             <h3>{lead.title}</h3>
             <p className="home-category-excerpt">{lead.excerpt}</p>
+            <span className="home-read-more">Read more <span aria-hidden="true">↗</span></span>
           </Link>
         )}
 
@@ -83,6 +84,7 @@ export default function CategoryNews({
                 <p className="home-kicker">{article.category}</p>
                 <h3>{article.title}</h3>
                 <span>{article.author || "SLNEWSBLOG"} · {article.date}</span>
+                <strong className="home-read-more">Read more <span aria-hidden="true">↗</span></strong>
               </div>
             </Link>
           ))}
