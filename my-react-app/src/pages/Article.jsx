@@ -8,7 +8,11 @@ import {
   Download,
 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
-import { getShareUrl, shareWithImage } from "../utils/shareUtils";
+import {
+  getCrawlerShareUrl,
+  getShareUrl,
+  shareWithImage,
+} from "../utils/shareUtils";
 
 // Facebook icon
 const FacebookIcon = (props) => (
@@ -149,7 +153,8 @@ export default function Article() {
     );
   }
 
-  const shareUrl = window.location.href;
+  const articlePageUrl = window.location.href;
+  const shareUrl = getCrawlerShareUrl(article.slug || id);
 
   const articleImage =
     article.images &&
@@ -164,7 +169,7 @@ export default function Article() {
     <article className="mx-auto max-w-4xl px-4 py-16">
       <Helmet>
         <title>
-          {article.title} | Salone News
+          {article.title} | SLNEWSBLOG
         </title>
 
         <meta
@@ -190,7 +195,7 @@ export default function Article() {
         <meta property="og:image:height" content="630" />
         <meta
           property="og:url"
-          content={shareUrl}
+          content={articlePageUrl}
         />
 
         <meta
@@ -223,7 +228,7 @@ export default function Article() {
       <p className="mt-4 text-sm text-gray-500">
         {article.date || article.createdAt || ""}
         {" · "}
-        {article.author || "Salone News"}
+        {article.author || "SLNEWSBLOG"}
         {" · "}
         {article.location || "Sierra Leone"}
       </p>
@@ -325,7 +330,7 @@ export default function Article() {
 
       <img
         src={articleImage}
-        alt={article.title || "Salone News story"}
+        alt={article.title || "SLNEWSBLOG story"}
         className="mt-8 h-80 w-full rounded-xl object-cover md:h-[30rem]"
       />
 

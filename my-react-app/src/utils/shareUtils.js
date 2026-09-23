@@ -11,6 +11,12 @@ export function getShareUrl(platform, url, title) {
   return platforms[platform] || null;
 }
 
+export function getCrawlerShareUrl(slug) {
+  const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
+  const backendUrl = apiUrl.replace(/\/api\/?$/, "").replace(/\/$/, "");
+  return `${backendUrl}/share/${encodeURIComponent(slug)}`;
+}
+
 export async function shareWithImage(title, text, url, imagePath) {
   if (!navigator.share) {
     throw new Error("Web Share API not supported");
