@@ -11,19 +11,40 @@ export function getShareUrl(platform, url, title) {
   return platforms[platform] || null;
 }
 
-export async function shareLink(title, text, url) {
+export async function shareWithImage(title, text, url, imagePath) {
   if (!navigator.share) {
     throw new Error("Web Share API not supported");
   }
 
   try {
-    await navigator.share({
-      title,
-      text,
-      url,
-    });
+    // 1. Try to fetch the image as a file for the "attachment" experience
+    const response = await fetch(imagePath);
+    const blob = await response.blob();
+    const file = new File([blob], "article-image.jpg", { type: blob.type });
+
+    // 2. Check if the browser supports sharing files
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        files: [file],
+        title: title,
+        text: text,
+        url: url,
+      });
+    } else {
+      // 3. Fallback to sharing just the link (which uses OG tags for the thumbnail)
+      await navigator.share({
+        title: title,
+        text: text,
+        url: url,
+      });
+    }
   } catch (error) {
     console.error("Sharing failed:", error);
-    throw error;
+    // Final fallback: just share the link if fetching the image failed
+    try {
+      await navigator.share({ title, text, url });
+    } catch (finalError) {
+      throw finalError;
+    }
   }
 }

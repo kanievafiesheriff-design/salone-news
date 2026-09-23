@@ -8,7 +8,7 @@ import {
   Download,
 } from "lucide-react";
 import { Helmet } from "react-helmet-async";
-import { getShareUrl, shareLink } from "../utils/shareUtils";
+import { getShareUrl, shareWithImage } from "../utils/shareUtils";
 
 // Facebook icon
 const FacebookIcon = (props) => (
@@ -236,10 +236,11 @@ export default function Article() {
         <button
           onClick={async () => {
             try {
-              await shareLink(
+              await shareWithImage(
                 article.title,
                 article.excerpt || "",
-                shareUrl
+                shareUrl,
+                articleImage
               );
             } catch (e) {
               console.error("Native share failed, use individual buttons", e);
