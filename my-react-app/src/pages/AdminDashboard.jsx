@@ -74,7 +74,7 @@ function AdminDashboard() {
   const [pendingAudio, setPendingAudio] = useState(null);
   const [breakingNewsText, setBreakingNewsText] = useState("");
   const { signOut, user } = useContext(AuthContext);
-  const [form, setForm] = useState({ title: "", excerpt: "", content: "", category: "Politics", author: user?.name || "Vafie Sheriff", images: [], videoUrl: "", audioUrl: "", location: "Freetown", published: false, featured: false, trending: false, isAd: false, adLink: "" });
+  const [form, setForm] = useState({ title: "", excerpt: "", content: "", category: "Politics", author: user?.name || "Vafie Sheriff", image: "", videoUrl: "", audioUrl: "", location: "Freetown", published: false, featured: false, trending: false, isAd: false, adLink: "" });
 
   useEffect(() => {
     getAdminNews({ limit: 50 })
@@ -138,7 +138,7 @@ function AdminDashboard() {
     setActionError("");
     try {
       const response = await uploadAdminImage(file);
-      setForm((current) => ({ ...current, images: [...current.images, response.imageUrl] }));
+      setForm((current) => ({ ...current, image: response.imageUrl }));
     } catch (error) {
       setActionError(error.message);
     } finally {
@@ -197,15 +197,10 @@ function AdminDashboard() {
     try {
       let article = { ...form };
 
-      if (pendingImage && (!form.images || form.images.length === 0)) {
+      if (pendingImage) {
         setIsUploadingImage(true);
         const uploadResponse = await uploadAdminImage(pendingImage);
-        article.images = [uploadResponse.imageUrl];
-        setIsUploadingImage(false);
-      } else if (pendingImage && form.images) {
-        setIsUploadingImage(true);
-        const uploadResponse = await uploadAdminImage(pendingImage);
-        article.images = [...form.images, uploadResponse.imageUrl];
+        article.image = uploadResponse.imageUrl;
         setIsUploadingImage(false);
       }
 
@@ -223,7 +218,7 @@ function AdminDashboard() {
         setIsUploadingAudio(false);
       }
 
-      if (article.isAd && article.published && (!article.images || article.images.length === 0)) {
+      if (article.isAd && article.published && !article.image) {
         throw new Error("Advertisements must have an image to be published.");
       }
 
@@ -518,19 +513,14 @@ function AdminDashboard() {
           <label>Location<input name="location" value={form.location} onChange={updateForm} /></label>
         </div>
         <div className="admin-gallery-section">
-          <label>Article Images</label>
-          <div className="admin-image-grid">
-            {form.images.map((img, index) => (
-              <div key={index} className="admin-image-item">
-                <img src={img} alt={`Preview ${index + 1}`} />
-                <div className="admin-image-controls">
-                  <button type="button" onClick={() => moveImage(index, -1)} disabled={index === 0} title="Move Up">↑</button>
-                  <button type="button" onClick={() => moveImage(index, 1)} disabled={index === form.images.length - 1} title="Move Down">↓</button>
-                  <button type="button" onClick={() => removeImage(index)} className="admin-delete-btn" title="Remove">×</button>
-                </div>
-                {index === 0 && <span className="admin-featured-badge">Featured</span>}
+          <label>Article Image</label>
+          <div className="admin-image-preview">
+            {form.image && (
+              <div className="admin-image-item">
+                <img src={form.image} alt="Preview" />
+                <button type="button" onClick={() => setForm(prev => ({...prev, image: ""}))} className="admin-delete-btn">×</button>
               </div>
-            ))}
+            )}
           </div>
           <div className="admin-gallery-actions">
             <div className="admin-upload-group">
@@ -539,7 +529,7 @@ function AdminDashboard() {
                 placeholder="Paste image URL..."
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
-                    addImageUrl(e.target.value);
+                    setForm(prev => ({...prev, image: e.target.value}));
                     e.target.value = "";
                   }
                 }}
