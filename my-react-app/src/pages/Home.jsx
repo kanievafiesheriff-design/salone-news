@@ -8,6 +8,7 @@ import AdCard from "../components/AdCard";
 import GoogleAdComponent from "../components/GoogleAdComponent";
 import { GOOGLE_AD_SLOTS } from "../config/adSlots";
 import { getAds } from "../services/newsApi";
+import "../styles/Home.css";
 
 export default function Home() {
   const [ads, setAds] = useState({
@@ -30,7 +31,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main>
+    <main className="home-page">
       {/* Main featured stories */}
       <FeaturedNews />
 
@@ -54,8 +55,8 @@ export default function Home() {
         </div>
       )}
 
-      <div className="mx-auto max-w-7xl px-4 grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div className="lg:col-span-9">
+      <div className="home-content">
+        <div className="home-content__main">
           {/* Latest news */}
           <LatestNews />
 
@@ -114,7 +115,7 @@ export default function Home() {
           />
         </div>
 
-        <aside className="lg:col-span-3 space-y-8">
+        <aside className="home-content__aside">
           {/* Home Sidebar Ad Slot */}
           {ads.home_sidebar?.length > 0 && (
             <div className="space-y-4">
