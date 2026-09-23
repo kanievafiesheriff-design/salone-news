@@ -24,6 +24,30 @@ async function request(endpoint, options = {}) {
 
   try {
     data = await response.json();
+
+    // Automatically resolve relative paths to absolute URLs
+    // This ensures images/videos/audios are loaded from the backend server, not the frontend
+    if (data && typeof data === 'object') {
+      const resolvePaths = (obj) => {
+        if (Array.isArray(obj)) {
+          return obj.map(resolvePaths);
+        } else if (obj !== null && typeof obj === 'object') {
+          return Object.fromEntries(
+            Object.entries(obj).map(([key, value]) => {
+              if (typeof value === 'string' && (value.startsWith('/uploads/') || value.startsWith('/images/'))) {
+                const baseUrl = API_URL.endsWith('/') ? API_URL.slice(0, -1) : API_URL;
+                // Remove /api from baseUrl if it's there, as uploads are usually at the root
+                const rootUrl = baseUrl.replace('/api', '');
+                return [key, `${rootUrl}${value.startsWith('/') ? '' : '/'}${value}`];
+              }
+              return [key, resolvePaths(value)];
+            })
+          );
+        }
+        return obj;
+      };
+      data = resolvePaths(data);
+    }
   } catch {
     data = {};
   }
