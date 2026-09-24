@@ -101,10 +101,12 @@ app.get("/share/:slug", async (req, res) => {
   <meta property="og:title" content="${title}">
   <meta property="og:description" content="${description}">
   <meta property="og:image" content="${image}">
+  <meta property="og:image:secure_url" content="${image}">
+  <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:alt" content="${title}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:url" content="${shareUrl || articleUrl}">
+  <meta property="og:url" content="${shareUrl}">
   <meta property="og:type" content="article">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${title}">
