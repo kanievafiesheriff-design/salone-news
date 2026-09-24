@@ -14,10 +14,10 @@ import adRoutes from "./routes/adRoutes.js";
 dotenv.config();
 
 const app = express();
+app.set("trust proxy", 1);
 
 const PORT = process.env.PORT || 5000;
 const CLIENT_URL = (process.env.PUBLIC_SITE_URL || process.env.CLIENT_URL || "http://localhost:5173").replace(/\/$/, "");
-const API_ORIGIN = (process.env.API_PUBLIC_URL || `http://localhost:${PORT}`).replace(/\/$/, "");
 
 function escapeHtml(value = "") {
   return String(value).replace(/[&<>"']/g, (character) => ({
@@ -29,10 +29,13 @@ function escapeHtml(value = "") {
   }[character]));
 }
 
-function toAbsoluteUrl(value = "") {
+function toAbsoluteUrl(value = "", request) {
   if (!value) return "";
   if (/^https?:\/\//i.test(value)) return value;
-  return `${API_ORIGIN}${value.startsWith("/") ? value : `/${value}`}`;
+  const configuredOrigin = process.env.API_PUBLIC_URL;
+  const requestOrigin = `${request.protocol}://${request.get("host")}`;
+  const origin = (configuredOrigin || requestOrigin || `http://localhost:${PORT}`).replace(/\/$/, "");
+  return `${origin}${value.startsWith("/") ? value : `/${value}`}`;
 }
 
 /*
@@ -91,7 +94,8 @@ app.get("/share/:slug", async (req, res) => {
 
     const title = escapeHtml(article.title);
     const description = escapeHtml(article.excerpt);
-    const image = escapeHtml(toAbsoluteUrl(article.image) || "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=85");
+    const articleImage = article.image || article.imageUrl || article.images?.[0];
+    const image = escapeHtml(toAbsoluteUrl(articleImage, req) || "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=85");
     const articleUrl = `${CLIENT_URL}/article/${encodeURIComponent(article.slug)}`;
     const publishedTime = article.publishedAt || article.date || article.createdAt;
 
