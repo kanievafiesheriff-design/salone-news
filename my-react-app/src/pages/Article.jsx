@@ -182,6 +182,8 @@ export default function Article() {
           content={article.title || ""}
         />
 
+        <meta property="og:site_name" content="SLNEWSBLOG" />
+
         <meta
           property="og:description"
           content={article.excerpt || ""}
@@ -191,6 +193,7 @@ export default function Article() {
           property="og:image"
           content={articleImage}
         />
+        <meta property="og:image:alt" content={article.title || "SLNEWSBLOG story"} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta
@@ -202,6 +205,8 @@ export default function Article() {
           property="og:type"
           content="article"
         />
+        <meta property="article:section" content={article.category || "News"} />
+        <link rel="canonical" href={articlePageUrl} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
@@ -215,6 +220,7 @@ export default function Article() {
           name="twitter:image"
           content={articleImage}
         />
+        <meta name="twitter:image:alt" content={article.title || "SLNEWSBLOG story"} />
       </Helmet>
 
       <p className="text-sm font-bold uppercase tracking-wider text-green-700">
@@ -244,7 +250,8 @@ export default function Article() {
               await shareWithImage(
                 article.title,
                 article.excerpt || "",
-                shareUrl
+                shareUrl,
+                articleImage
               );
             } catch (e) {
               console.error("Native share failed, use individual buttons", e);
