@@ -18,6 +18,14 @@ app.set("trust proxy", 1);
 
 const PORT = process.env.PORT || 5000;
 const CLIENT_URL = (process.env.PUBLIC_SITE_URL || process.env.CLIENT_URL || "http://localhost:5173").replace(/\/$/, "");
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  process.env.CLIENT_URL,
+  process.env.PUBLIC_SITE_URL,
+  "https://slnewsblogs.onrender.com",
+  "https://salone-news-1.onrender.com",
+].filter(Boolean);
 
 function escapeHtml(value = "") {
   return String(value).replace(/[&<>"']/g, (character) => ({
@@ -44,11 +52,16 @@ function toAbsoluteUrl(value = "", request) {
 
 app.use(
   cors({
-    origin: [
-      process.env.CLIENT_URL,
-      "http://localhost:5173",
-      "http://127.0.0.1:5173",
-    ].filter(Boolean),
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error(`CORS blocked for origin: ${origin}`));
+    },
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
     credentials: true,
   })
 );
