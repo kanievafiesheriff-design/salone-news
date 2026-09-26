@@ -21,7 +21,6 @@ import {
   X,
   Upload,
 } from "lucide-react";
-import news from "../data/news";
 import AuthContext from "../context/AuthContext";
 import { createAdminNews, deleteAdminNews, getAdminNews, updateAdminNews, uploadAdminImage, uploadAdminVideo, uploadAdminAudio, setBreakingNews, getBreakingNews, getSettings, updateSetting } from "../services/newsApi";
 import "./AdminDashboard.css";
@@ -60,7 +59,7 @@ function AdminDashboard() {
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState([]);
   const [isComposerOpen, setIsComposerOpen] = useState(false);
-  const [stories, setStories] = useState(news);
+  const [stories, setStories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
   const [actionError, setActionError] = useState("");
@@ -382,7 +381,7 @@ function AdminDashboard() {
                 </div>
                 <label className="admin-search"><Search size={16} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search stories" aria-label="Search stories" /></label>
               </div>
-              {loadError && <div className="admin-selection-bar"><span>{loadError}. Showing local preview data.</span><button type="button" onClick={() => window.location.reload()}>Retry</button></div>}
+              {loadError && <div className="admin-selection-bar"><span>{loadError}</span><button type="button" onClick={() => window.location.reload()}>Retry</button></div>}
               {actionError && <div className="admin-selection-bar"><span>{actionError}</span><button type="button" onClick={() => setActionError("")}>Dismiss</button></div>}
               {selected.length > 0 && <div className="admin-selection-bar"><span>{selected.length} selected</span><button type="button" onClick={() => setSelected([])}>Clear selection</button></div>}
               <div className="admin-table-wrap">

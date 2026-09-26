@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import news from "../data/news";
 import { getArticle, getArticleBySlug } from "../services/newsApi";
 import {
   Share2,
@@ -43,13 +42,7 @@ const XIcon = (props) => (
 export default function Article() {
   const { id } = useParams();
 
-  const [article, setArticle] = useState(() =>
-    news.find(
-      (item) =>
-        String(item.id) === String(id) ||
-        item.slug === id
-    )
-  );
+  const [article, setArticle] = useState(null);
 
   const [isLoading, setIsLoading] = useState(true);
 

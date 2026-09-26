@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import NewsCard from "../components/NewsCard";
-import news from "../data/news";
 import { getNews, getAds } from "../services/newsApi";
 import AdCard from "../components/AdCard";
 import "../styles/News.css";
 
 export default function News() {
-  const [articles, setArticles] = useState(news);
+  const [articles, setArticles] = useState([]);
 
   const [ads, setAds] = useState({
     news_top: [],
