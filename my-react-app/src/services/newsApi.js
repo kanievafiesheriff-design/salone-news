@@ -1,5 +1,8 @@
-const API_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const rawApiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API_URL = rawApiUrl.replace(/\/$/, "");
+const normalizedApiUrl = API_URL.endsWith("/api")
+  ? API_URL
+  : `${API_URL}/api`;
 
 // Warn loudly in production if the env var is missing — this is the #1
 // cause of "site shows old data / wrong images" on the deployed site.
@@ -10,11 +13,13 @@ if (import.meta.env.PROD && !import.meta.env.VITE_API_URL) {
   );
 }
 
+const API_BASE = normalizedApiUrl;
+
 /**
  * Generic API request helper
  */
 async function request(endpoint, options = {}) {
-  const baseUrl = API_URL.endsWith("/") ? API_URL.slice(0, -1) : API_URL;
+  const baseUrl = API_BASE.endsWith("/") ? API_BASE.slice(0, -1) : API_BASE;
   const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
   const finalUrl = `${baseUrl}${cleanEndpoint}`;
 

@@ -332,7 +332,7 @@ const news = [
     time: "11:10 AM",
     location: "Kingtom, Freetown",
     images: [
-      "https://thecalabashnewspaper.com/archives/64170",
+      "https://scontent.ffna1-2.fna.fbcdn.net/v/t39.99422-6/800826280_1075277164904601_992922204654294581_n.png?stp=dst-jpg_tt6&cstp=mx646x484&ctp=s646x484&_nc_cat=108&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=127cfc&_nc_ohc=tQV5qbhGPjMQ7kNvwGQAP6n&_nc_oc=AdoS6Soa-x2NbAUYmoUbOu1pV8KnUrzdEdxBXNzhu2unmEwPcH-8NjOBfVPLAhdxgG4&_nc_zt=14&_nc_ht=scontent.ffna1-2.fna&_nc_gid=SsjvnuVmcq_9EUkxQVYc5g&_nc_ss=7b2a8&oh=00_AQIhJps81X3K-6xl0TyFV8xlljlvdadSgrA-5T6zDLK4MA&oe=6AB9FA09",
     ],
     featured: false,
     trending: true,
@@ -364,35 +364,9 @@ const news = [
     trending: true,
     views: 9340,
     source: "The Calabash Newspaper",
-    sourceUrl: "https://slaj.sl/wp-content/uploads/2026/06/cropped-SLAJ-Logo.png",
+    sourceUrl: "https://thecalabashnewspaper.com/archives/64173",
     tags: ["SLAJ", "Press Freedom", "Free Speech", "Constitution"],
   },
-  {
-    id: 16,
-    title:
-      "PAN-SL Concludes 2026 Leadership Masterclass, Certifies 150 Young People",
-    slug:
-      "pan-sl-concludes-2026-leadership-masterclass-certifies-150-young-people",
-    excerpt:
-      "The People's Alliance for National Stability and Leadership (PAN-SL) has successfully concluded its 2026 Leadership Masterclass, equipping 150 young leaders with essential governance and leadership skills.",
-    content:
-      "The People's Alliance for National Stability and Leadership (PAN-SL) has officially concluded its intensive 2026 Leadership Masterclass, a program aimed at fostering the next generation of ethical and effective leaders in Sierra Leone. A total of 150 young men and women from across the country were certified following a rigorous training period that covered strategic planning, public administration, conflict resolution, and community development. Speaking at the closing ceremony, the program directors emphasized the importance of youth inclusion in national decision-making and urged the graduates to apply their new skills to drive sustainable development in their respective communities. The masterclass featured sessions led by seasoned policymakers and industry experts, providing participants with practical tools to navigate the complexities of modern leadership. The graduates expressed their gratitude for the opportunity, noting that the training has significantly enhanced their capacity to lead and serve with integrity.",
-    category: "Education",
-    author: "National Affairs Desk",
-    date: "September 20, 2026",
-    time: "11:00 AM",
-    location: "Freetown",
-    images: [
-      "https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=1600&q=85",
-    ],
-    featured: true,
-    trending: true,
-    views: 5400,
-    source: "The Calabash Newspaper",
-    sourceUrl: "https://thecalabashnewspaper.com/news",
-    tags: ["PAN-SL", "Leadership", "Youth", "Education"],
-  },
-
 ];
 
 export default news;

@@ -31,7 +31,10 @@ export default function AdCard({ id, image, title, description, link, size = 'de
 
   const trackEvent = async (type) => {
     try {
-      await fetch(`http://localhost:5000/api/ads/track/${id}`, {
+      const apiBase = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+      const normalizedBase = apiBase.endsWith('/api') ? apiBase : `${apiBase}/api`;
+
+      await fetch(`${normalizedBase}/ads/track/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type }),
