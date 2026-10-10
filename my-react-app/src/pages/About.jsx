@@ -47,7 +47,7 @@ export default function About() {
             className="max-w-4xl"
           >
             <p className="mb-5 text-sm font-bold uppercase tracking-[0.2em] text-green-400">
-              About SLNEWSBLOG
+              About VASILNEWSMEDIA
             </p>
 
             <h1 className="text-4xl font-black leading-tight sm:text-5xl lg:text-7xl">
@@ -126,7 +126,7 @@ export default function About() {
               <p>
                 Our country is changing quickly. New ideas are taking root in
                 Freetown, provincial towns, and communities across the country.
-                SLNEWSBLOG follows those changes with reporting that is
+                VASILNEWSMEDIA follows those changes with reporting that is
                 grounded, curious, and made for real life.
               </p>
 
@@ -286,7 +286,7 @@ export default function About() {
             </h2>
 
             <p className="mt-3 text-gray-500">
-              Have a story, correction, tip or question for SLNEWSBLOG?
+              Have a story, correction, tip or question for VASILNEWSMEDIA?
             </p>
           </div>
 

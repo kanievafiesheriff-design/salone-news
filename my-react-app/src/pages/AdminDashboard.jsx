@@ -310,7 +310,7 @@ function AdminDashboard() {
         <div className="admin-brand">
           <div className="admin-brand-mark">SN</div>
           <div>
-            <strong>SLNEWSBLOG</strong>
+            <strong>VASILNEWSMEDIA</strong>
             <span>Editorial desk</span>
           </div>
         </div>

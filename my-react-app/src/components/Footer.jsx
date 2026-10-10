@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 md:grid-cols-3">
         <div>
           <h2 className="text-2xl font-bold text-green-500">
-            SLNEWSBLOG
+            VASILNEWSMEDIA
           </h2>
 
           <p className="mt-3 text-sm leading-6 text-gray-400">
