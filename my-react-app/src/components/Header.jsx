@@ -10,9 +10,9 @@ export default function Header() {
           <span>Wednesday, September 23, 2026</span>
           <span>Freetown · Sierra Leone</span>
         </div>
-        <Link to="/" className="site-wordmark" aria-label="SLNEWSBLOG home">
-          <span className="site-wordmark__mark">SL</span>
-          <span>NEWSBLOG</span>
+        <Link to="/" className="site-wordmark" aria-label="VASIL NEWSMEDIA home">
+          <span className="site-wordmark__mark">VASIL</span>
+          <span>NEWSMEDIA</span>
         </Link>
         <div className="site-masthead__utility">
           <span>Independent journalism</span>
