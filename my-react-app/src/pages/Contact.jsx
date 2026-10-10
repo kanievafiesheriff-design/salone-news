@@ -64,7 +64,7 @@ export default function Contact() {
             </p>
 
             <h1 className="text-4xl font-bold sm:text-5xl">
-              Contact SLNEWSBLOG
+              Contact VASILNEWSMEDIA
             </h1>
 
             <p className="mt-5 max-w-2xl text-lg leading-8 text-gray-300">
@@ -90,7 +90,7 @@ export default function Contact() {
           </h2>
 
           <p className="mt-3 leading-7 text-gray-600">
-            Reach the SLNEWSBLOG team for news tips, editorial inquiries,
+            Reach the VASILNEWSMEDIA team for news tips, editorial inquiries,
             corrections, partnerships, and general questions.
           </p>
 
@@ -98,13 +98,13 @@ export default function Contact() {
             <ContactItem
               icon={Mail}
               title="Email"
-              value="slnewsblog@info"
+              value="vasilfoundation31@gmail.com"
             />
 
             <ContactItem
               icon={Phone}
               title="Phone"
-              value="+232 073131961"
+              value="+232 073131961 "
             />
 
             <ContactItem
@@ -123,7 +123,7 @@ export default function Contact() {
           {/* Social media */}
           <div className="mt-10">
             <h3 className="font-semibold text-gray-900">
-              Follow SLNEWSBLOG
+              Follow VASILHUB
             </h3>
 
             <div className="mt-4 flex gap-3">
